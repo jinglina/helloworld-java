@@ -1,4 +1,4 @@
-FROM 10.7.12.250/longxin/loongnix-openjdk8:latest
+FROM 10.180.249.20:30002/mips64le/loongnix-openjdk8:latest
 
 # USER root
 # ARG ZIP_FILE
