@@ -1,7 +1,6 @@
 pipeline {
   agent {
-    kubernetes {
-      label podlabel
+      kubernetes {
       yaml """
 kind: Pod
 metadata:
