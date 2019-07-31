@@ -12,7 +12,7 @@ spec:
     - name: CONTAINER_ENV_VAR
       value: jnlp
   - name: maven
-    image: maven:3.3.9-jdk-8-alpine
+    image: maven
     command:
     - cat
     tty: true
