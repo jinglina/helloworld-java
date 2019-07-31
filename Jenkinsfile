@@ -37,4 +37,5 @@ pipeline {
         sh "docker push 10.180.249.12:30480/library/test:latest"
       }
     }     
-}
+  }
+ }	
