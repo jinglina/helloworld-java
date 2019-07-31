@@ -1,8 +1,5 @@
 pipeline {
   agent none
-  triggers {
-    cron('0/20 * * * * ? ') // 代表此刻开始开始，每20s执行一次
-  }
   stages {
     stage('Checkout') {
 	    agent any
