@@ -1,7 +1,34 @@
 pipeline {
   agent {
     kubernetes {
-      yamlFile 'KubernetesPod.yaml'
+      label podlabel
+      yaml """
+kind: Pod
+metadata:
+  name: jenkins-slave      
+spec:
+  containers:
+  - name: jnlp
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: jnlp
+  - name: maven
+    image: maven:3.3.9-jdk-8-alpine
+    command:
+    - cat
+    tty: true
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: maven
+  - name: busybox
+    image: busybox
+    command:
+    - cat
+    tty: true
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: busybox 
+"""      
     }
   }  
   triggers {
