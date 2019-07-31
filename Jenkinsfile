@@ -31,9 +31,6 @@ spec:
 """      
     }
   }  
-  triggers {
-    cron('0/20 * * * * ? ') 
-  }
   stages {
     stage('Checkout') {
 	    steps {
