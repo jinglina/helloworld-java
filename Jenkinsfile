@@ -48,7 +48,7 @@ spec:
     }
     stage('docker login and push') {
 	    steps {
-		container('docker') {
+		container('maven') {
                 echo "2.login oc & docker regristry"
                 sh "docker login -u 'admin' -p 'Harbor12345' 'http://10.180.249.12:30002'"
                 sh "docker build -f src/docker/Dockerfile -t 10.180.249.12:30002/library/test:latest ." 
