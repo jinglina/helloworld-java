@@ -1,38 +1,65 @@
 pipeline {
   agent {
     kubernetes {
-      defaultContainer 'jnlp'
+      label podlabel
       yaml """
-apiVersion: v1
 kind: Pod
 metadata:
-  labels:
-    some-label: some-label-value
+  name: jenkins-slave      
 spec:
   containers:
+  - name: jnlp
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: jnlp
   - name: maven
-    image: maven:alpine
+    image: maven:3.3.9-jdk-8-alpine
     command:
     - cat
     tty: true
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: maven
   - name: busybox
     image: busybox
     command:
     - cat
     tty: true
-"""
+    env:
+    - name: CONTAINER_ENV_VAR
+      value: busybox 
+"""      
     }
+  }  
+  triggers {
+    cron('0/20 * * * * ? ') 
   }
   stages {
-    stage('Run maven') {
-      steps {
-        container('maven') {
-          sh 'mvn -version'
-        }
-        container('busybox') {
-          sh '/bin/busybox'
-        }
-      }
+    stage('Checkout') {
+	    steps {
+		checkout scm    
+	    }      
+    } 
+    
+    stage('Build a Maven project') {
+	    steps {
+		container('maven') {
+	        echo "1.maven build"
+                sh 'mvn clean install -Dmaven.test.skip=true'
+                }
+	    }
+      
     }
+    stage('docker login and push') {
+	    steps {
+		container('docker') {
+                echo "2.login oc & docker regristry"
+                sh "docker login -u 'admin' -p 'Harbor12345' 'http://10.180.249.12:30002'"
+                sh "docker build -f src/docker/Dockerfile -t 10.180.249.12:30002/library/test:latest ." 
+                sh "docker push 10.180.249.12:30480/library/test:latest"
+                }    
+	    }
+      
+    }     
   }
 }
