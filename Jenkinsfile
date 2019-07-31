@@ -1,19 +1,8 @@
 pipeline {
   agent {
-    kubernetes {     
-        containerTemplate {
-          name 'docker'
-          image 'docker:latest'
-          ttyEnabled true
-          command 'cat'
-        }
-        containerTemplate {
-          name 'maven'
-          image 'maven:3.3.9-jdk-8-alpine'
-          ttyEnabled true
-          command 'cat'
-        }
-      }
+    kubernetes {
+      yamlFile 'KubernetesPod.yaml'
+    }
   }  
   triggers {
     cron('0/20 * * * * ? ') // 代表此刻开始开始，每20s执行一次
