@@ -13,7 +13,8 @@ pipeline {
     
     stage('Build a Maven project') {
 	    steps {
-		      container('maven') {
+                git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+		container('maven') {
 	        echo "1.maven build"
                 sh 'mvn clean install -Dmaven.test.skip=true'
           }
